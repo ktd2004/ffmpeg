@@ -88,3 +88,8 @@
 /tools/seek_print
 /tools/uncoded_frame
 /tools/zmqsend
+
+
+cscope.files
+cscope.out
+tags

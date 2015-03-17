@@ -170,7 +170,7 @@ static int set_expr(AVExpr **pexpr, const char *expr, const char *option, void *
                         NULL, NULL, NULL, NULL, 0, log_ctx);
     if (ret < 0) {
         av_log(log_ctx, AV_LOG_ERROR,
-               "Error when evaluating the expression '%s' for %s\n",
+               "Error when parsing the expression '%s' for %s\n",
                expr, option);
         *pexpr = old;
         return ret;
@@ -233,10 +233,10 @@ static int query_formats(AVFilterContext *ctx)
         AV_PIX_FMT_YUV444P,
         AV_PIX_FMT_NONE
     };
-
-    ff_set_common_formats(ctx, ff_make_format_list(pixel_fmts_eq));
-
-    return 0;
+    AVFilterFormats *fmts_list = ff_make_format_list(pixel_fmts_eq);
+    if (!fmts_list)
+        return AVERROR(ENOMEM);
+    return ff_set_common_formats(ctx, fmts_list);
 }
 
 static int filter_frame(AVFilterLink *inlink, AVFrame *in)
